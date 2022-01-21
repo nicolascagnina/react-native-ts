@@ -1,24 +1,23 @@
 interface Client {
   id: string;
   name: string;
-  username: string;
   email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
 }
-export type {Client};
+interface Credentials {
+  user: string;
+  password: string;
+}
+
+type RootStackParamList = {
+  SignIn:
+    | {setIsSignedIn: React.Dispatch<React.SetStateAction<boolean>>}
+    | undefined;
+  SignUp: undefined;
+  List: undefined;
+  Clients: undefined;
+  ClientForm: {
+    client: Client;
+  };
+};
+
+export type {Client, Credentials, RootStackParamList};

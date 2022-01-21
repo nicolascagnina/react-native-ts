@@ -1,33 +1,13 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
-import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
-// import Clients from './Components/ClientsList';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import Register from './Components/Register';
 import FlipperAsyncStorage from 'rn-flipper-async-storage-advanced';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import MainStack from './Navigation';
 
-const App = () => {
-  const backgroundStyle = {
-    backgroundColor: 'white',
-  };
-
+export default function App() {
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaProvider>
       <FlipperAsyncStorage />
-      <StatusBar />
-      {/* <Clients /> */}
-      <Register />
-    </SafeAreaView>
+      <MainStack />
+    </SafeAreaProvider>
   );
-};
-
-export default App;
+}

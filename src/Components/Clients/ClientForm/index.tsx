@@ -10,35 +10,47 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useForm, Controller} from 'react-hook-form';
-import {Credentials} from '../../Helpers/types';
-import {RootStackParamList} from '../../Helpers/types';
+import {Client} from '../../../Helpers/types';
+import {RootStackParamList} from '../../../Helpers/types';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-const {width, height} = Dimensions.get('window');
-type Props = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'ClientForm'>;
 
-export default function Register({route, navigation}: Props) {
-  const handleRegister = async (newUser: Credentials) => {
+export default function ClientForm({route, navigation}: Props) {
+  // const {getValues} = useForm();
+
+  const createClient = async (client: Client) => {
+    const clients = await AsyncStorage.getItem('clients');
+    const parsedClients = (clients && JSON.parse(clients)) ?? [];
     try {
-      const users = await AsyncStorage.getItem('users');
-      console.log(newUser);
-      const parsedUsers = users && JSON.parse(users);
-      if (
-        Array.isArray(parsedUsers) &&
-        !parsedUsers.filter((user: Credentials) => user.user === newUser.user)
-          .length
-      ) {
-        parsedUsers.push(newUser);
-        return AsyncStorage.setItem('users', JSON.stringify(parsedUsers)).then(
-          () => navigation.navigate('SignIn'),
-        );
-      }
-      console.log('new user created');
-      AsyncStorage.setItem('users', JSON.stringify([newUser]));
+      const newClient = {
+        id: (clients && +parsedClients?.length + 1) ?? 1,
+        name: client.name,
+        email: client.email,
+      };
+      parsedClients.push(newClient);
+      await AsyncStorage.setItem('clients', JSON.stringify(parsedClients));
     } catch (error) {
       console.log(error);
     }
   };
+
+  // const updateClient = async (client: Client) => {
+  //   try {
+  //     const clients = await AsyncStorage.getItem('clients');
+  //     const parsedClients = clients && JSON.parse(clients);
+  //     if (Array.isArray(parsedClients)) {
+  //       parsedClients.forEach((el, index) => {
+  //         if (el.id === client.id) {
+  //           parsedClients[index] = client;
+  //         }
+  //       });
+  //       return AsyncStorage.setItem('clients', JSON.stringify(parsedClients));
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const {
     control,
@@ -46,18 +58,16 @@ export default function Register({route, navigation}: Props) {
     formState: {errors},
   } = useForm({
     defaultValues: {
-      user: '',
-      password: '',
+      name: route.params?.client.name || '',
+      email: route.params?.client.email || '',
     },
   });
-  const onSubmit = (data: Credentials) => {
-    handleRegister(data);
+  const onSubmit = (data: Client) => {
+    createClient(data);
   };
   return (
     <View style={styles.formContainer}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Register</Text>
-      </View>
+      <Text style={styles.title}>Information:</Text>
       <Controller
         control={control}
         rules={{
@@ -70,17 +80,15 @@ export default function Register({route, navigation}: Props) {
               onChangeText={onChange}
               style={styles.textInput}
               value={value}
-              placeholder="Username"
+              placeholder="Name"
             />
           </View>
         )}
-        name="user"
+        name="name"
       />
-      {errors.user && <Text>This is required.</Text>}
       <Controller
         control={control}
         rules={{
-          maxLength: 100,
           required: true,
         }}
         render={({field: {onChange, onBlur, value}}) => (
@@ -90,32 +98,27 @@ export default function Register({route, navigation}: Props) {
               onChangeText={onChange}
               style={styles.textInput}
               value={value}
-              placeholder="Password"
+              placeholder="Email"
             />
           </View>
         )}
-        name="password"
+        name="email"
       />
-      {errors.password && <Text>This is required.</Text>}
-
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>Submit</Text>
+        <Text style={styles.buttonText}>Create</Text>
       </TouchableOpacity>
-      <Button title="SignIn" onPress={() => navigation.navigate('SignIn')} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   formContainer: {
-    marginVertical: height * 0.2,
     paddingHorizontal: 30,
-    paddingVertical: 30,
+    paddingVertical: 0,
     justifyContent: 'center',
     alignContent: 'center',
   },
   titleContainer: {
-    marginHorizontal: width * 0.15,
     alignContent: 'center',
     justifyContent: 'center',
   },
@@ -124,10 +127,6 @@ const styles = StyleSheet.create({
     color: '#007ACC',
     fontSize: 35,
     width: 200,
-  },
-  textInputsContainer: {
-    paddingBottom: 5,
-    borderBottomWidth: 0.4,
   },
   button: {
     marginVertical: 20,
@@ -139,6 +138,10 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: 'white',
+  },
+  textInputsContainer: {
+    paddingBottom: 5,
+    borderBottomWidth: 0.4,
   },
   textInput: {
     paddingTop: 30,

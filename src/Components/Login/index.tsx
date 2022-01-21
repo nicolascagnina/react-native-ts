@@ -15,26 +15,27 @@ import {RootStackParamList} from '../../Helpers/types';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 const {width, height} = Dimensions.get('window');
-type Props = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
-export default function Register({route, navigation}: Props) {
-  const handleRegister = async (newUser: Credentials) => {
+type Props = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
+
+export default function Login({route, navigation}: Props) {
+  console.log(route.params);
+  const handleLogin = async (credentials: Credentials) => {
     try {
       const users = await AsyncStorage.getItem('users');
-      console.log(newUser);
-      const parsedUsers = users && JSON.parse(users);
+      const parsedUsers = JSON.parse(users ?? '');
       if (
         Array.isArray(parsedUsers) &&
-        !parsedUsers.filter((user: Credentials) => user.user === newUser.user)
-          .length
+        parsedUsers.filter(
+          (user: Credentials) =>
+            user.user === credentials.user &&
+            user.password === credentials.password,
+        ).length
       ) {
-        parsedUsers.push(newUser);
-        return AsyncStorage.setItem('users', JSON.stringify(parsedUsers)).then(
-          () => navigation.navigate('SignIn'),
-        );
+        route.params?.setIsSignedIn(true);
+      } else {
+        console.log('Invalid credentials');
       }
-      console.log('new user created');
-      AsyncStorage.setItem('users', JSON.stringify([newUser]));
     } catch (error) {
       console.log(error);
     }
@@ -51,12 +52,12 @@ export default function Register({route, navigation}: Props) {
     },
   });
   const onSubmit = (data: Credentials) => {
-    handleRegister(data);
+    handleLogin(data);
   };
   return (
     <View style={styles.formContainer}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Register</Text>
+        <Text style={styles.title}>Log in</Text>
       </View>
       <Controller
         control={control}
@@ -101,7 +102,7 @@ export default function Register({route, navigation}: Props) {
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
-      <Button title="SignIn" onPress={() => navigation.navigate('SignIn')} />
+      <Button title="Sign Up" onPress={() => navigation.navigate('SignUp')} />
     </View>
   );
 }
@@ -125,10 +126,6 @@ const styles = StyleSheet.create({
     fontSize: 35,
     width: 200,
   },
-  textInputsContainer: {
-    paddingBottom: 5,
-    borderBottomWidth: 0.4,
-  },
   button: {
     marginVertical: 20,
     marginHorizontal: 90,
@@ -139,6 +136,10 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: 'white',
+  },
+  textInputsContainer: {
+    paddingBottom: 5,
+    borderBottomWidth: 0.4,
   },
   textInput: {
     paddingTop: 30,
