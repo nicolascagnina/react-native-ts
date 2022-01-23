@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Clients from '../Components/Clients';
-import ClientForm from '../Components/Clients/ClientForm';
+import {MainStackNavigator, ClientStackNavigator} from './MainNavigator';
 import Login from '../Components/Login';
 import Register from '../Components/Register';
+import {Button} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -19,11 +19,9 @@ export default function MainStack() {
         <Tab.Navigator
           screenOptions={({}) => ({
             headerTitle: '',
-            tabBarActiveTintColor: 'tomato',
-            tabBarInactiveTintColor: 'gray',
           })}>
-          <Tab.Screen name="Clients" component={Clients} />
-          <Tab.Screen name="ClientForm" component={ClientForm} />
+          <Tab.Screen name="Home" component={MainStackNavigator} />
+          <Tab.Screen name="Clients" component={ClientStackNavigator} />
         </Tab.Navigator>
       </NavigationContainer>
     </>
@@ -35,6 +33,15 @@ export default function MainStack() {
             name="SignIn"
             component={Login}
             initialParams={{setIsSignedIn: setIsSignedIn}}
+            options={({navigation}) => ({
+              headerRight: () => (
+                <Button
+                  onPress={() => navigation.navigate('SignUp')}
+                  title="Sign Up"
+                  color="#017ACC"
+                />
+              ),
+            })}
           />
           <Stack.Screen name="SignUp" component={Register} />
         </Stack.Navigator>

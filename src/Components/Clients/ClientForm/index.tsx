@@ -1,56 +1,26 @@
-import React from 'react';
-import {
-  Text,
-  View,
-  TextInput,
-  Button,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useContext, useEffect, useState} from 'react';
+import {Text, View, TextInput, TouchableOpacity} from 'react-native';
+import styles from './style';
 import {useForm, Controller} from 'react-hook-form';
 import {Client} from '../../../Helpers/types';
 import {RootStackParamList} from '../../../Helpers/types';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useIsFocused} from '@react-navigation/native';
+import {ClientContext} from '../../../Context/ClientsContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ClientForm'>;
 
 export default function ClientForm({route, navigation}: Props) {
-  // const {getValues} = useForm();
+  const {reset, setValue} = useForm();
+  const [client, setClient] = useState<Client>();
+  const clientContext = useContext(ClientContext);
+  const isFocused = useIsFocused();
 
-  const createClient = async (client: Client) => {
-    const clients = await AsyncStorage.getItem('clients');
-    const parsedClients = (clients && JSON.parse(clients)) ?? [];
-    try {
-      const newClient = {
-        id: (clients && +parsedClients?.length + 1) ?? 1,
-        name: client.name,
-        email: client.email,
-      };
-      parsedClients.push(newClient);
-      await AsyncStorage.setItem('clients', JSON.stringify(parsedClients));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // const updateClient = async (client: Client) => {
-  //   try {
-  //     const clients = await AsyncStorage.getItem('clients');
-  //     const parsedClients = clients && JSON.parse(clients);
-  //     if (Array.isArray(parsedClients)) {
-  //       parsedClients.forEach((el, index) => {
-  //         if (el.id === client.id) {
-  //           parsedClients[index] = client;
-  //         }
-  //       });
-  //       return AsyncStorage.setItem('clients', JSON.stringify(parsedClients));
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  useEffect(() => {
+    setClient(route.params?.client ?? undefined);
+    const test = !!route.params?.client;
+    console.log(test);
+  }, [isFocused]);
 
   const {
     control,
@@ -58,12 +28,13 @@ export default function ClientForm({route, navigation}: Props) {
     formState: {errors},
   } = useForm({
     defaultValues: {
-      name: route.params?.client.name || '',
-      email: route.params?.client.email || '',
+      name: client?.name ?? '',
+      email: client?.email ?? '',
     },
   });
   const onSubmit = (data: Client) => {
-    createClient(data);
+    clientContext?.addClient(data);
+    navigation.navigate('Clients');
   };
   return (
     <View style={styles.formContainer}>
@@ -78,6 +49,7 @@ export default function ClientForm({route, navigation}: Props) {
             <TextInput
               onBlur={onBlur}
               onChangeText={onChange}
+              autoCapitalize="none"
               style={styles.textInput}
               value={value}
               placeholder="Name"
@@ -110,43 +82,3 @@ export default function ClientForm({route, navigation}: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  formContainer: {
-    paddingHorizontal: 30,
-    paddingVertical: 0,
-    justifyContent: 'center',
-    alignContent: 'center',
-  },
-  titleContainer: {
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    textAlign: 'center',
-    color: '#007ACC',
-    fontSize: 35,
-    width: 200,
-  },
-  button: {
-    marginVertical: 20,
-    marginHorizontal: 90,
-    padding: 20,
-    borderRadius: 50,
-    backgroundColor: '#007ACC',
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: 'white',
-  },
-  textInputsContainer: {
-    paddingBottom: 5,
-    borderBottomWidth: 0.4,
-  },
-  textInput: {
-    paddingTop: 30,
-    paddingBottom: 15,
-    paddingHorizontal: 30,
-    margin: 5,
-  },
-});

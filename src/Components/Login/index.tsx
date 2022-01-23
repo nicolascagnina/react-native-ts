@@ -19,7 +19,6 @@ const {width, height} = Dimensions.get('window');
 type Props = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
 export default function Login({route, navigation}: Props) {
-  console.log(route.params);
   const handleLogin = async (credentials: Credentials) => {
     try {
       const users = await AsyncStorage.getItem('users');

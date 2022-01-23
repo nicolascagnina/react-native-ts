@@ -1,14 +1,20 @@
-interface Client {
-  id: string;
+export interface Client {
+  id: number;
   name: string;
   email: string;
 }
-interface Credentials {
+export interface Credentials {
   user: string;
   password: string;
 }
+export interface iClientContext {
+  clients: Client[] | null;
+  deleteClient: (id: number | undefined) => void;
+  addClient: (client: Client) => void;
+  updateClient: (client: Client) => void;
+}
 
-type RootStackParamList = {
+export type RootStackParamList = {
   SignIn:
     | {setIsSignedIn: React.Dispatch<React.SetStateAction<boolean>>}
     | undefined;
@@ -19,5 +25,3 @@ type RootStackParamList = {
     client: Client;
   };
 };
-
-export type {Client, Credentials, RootStackParamList};
