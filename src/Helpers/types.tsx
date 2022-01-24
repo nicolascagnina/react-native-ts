@@ -19,6 +19,7 @@ export type RootStackParamList = {
     | {setIsSignedIn: React.Dispatch<React.SetStateAction<boolean>>}
     | undefined;
   SignUp: undefined;
+  Home: undefined;
   List: undefined;
   Clients: undefined;
   ClientForm: {

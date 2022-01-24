@@ -11,7 +11,6 @@ import {ClientContext} from '../../../Context/ClientsContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'ClientForm'>;
 
 export default function ClientForm({route, navigation}: Props) {
-  const {reset, setValue} = useForm();
   const [client, setClient] = useState<Client>();
   const clientContext = useContext(ClientContext);
   const isFocused = useIsFocused();
@@ -68,6 +67,7 @@ export default function ClientForm({route, navigation}: Props) {
             <TextInput
               onBlur={onBlur}
               onChangeText={onChange}
+              autoCapitalize="none"
               style={styles.textInput}
               value={value}
               placeholder="Email"

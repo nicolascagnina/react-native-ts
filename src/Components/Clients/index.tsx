@@ -5,6 +5,7 @@ import ClientItem from './Client';
 import {RootStackParamList} from '../../Helpers/types';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ClientContext} from '../../Context/ClientsContext';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Clients'>;
 
@@ -18,6 +19,7 @@ const Clients = ({route, navigation}: Props) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('ClientForm')}>
+          <AntDesign name="home" size={30} />
           <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
       </View>

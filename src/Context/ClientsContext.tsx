@@ -22,8 +22,9 @@ const ClientContextProvider: FC = ({children}) => {
     await AsyncStorage.removeItem('clients');
   };
 
-  const addClient = (client: Client): void => {
+  const addClient = async (client: Client): Promise<void> => {
     setClients([...clients, {...client, id: clients ? clients.length + 1 : 1}]);
+    await AsyncStorage.setItem('clients', JSON.stringify(clients));
   };
 
   const updateClient = (client: Client): void => {
