@@ -35,13 +35,16 @@ const Clients = ({route, navigation}: Props) => {
         renderItem={({item}) => (
           <>
             <TouchableOpacity
-              onLongPress={() => clientContext?.deleteClient(item?.id)}
-              onPress={() =>
-                navigation.navigate('ClientForm', {
-                  client: item,
-                })
-              }>
-              <ClientItem item={item} style={styles.item} />
+              onLongPress={() => clientContext?.deleteClient(item?.id)}>
+              <ClientItem
+                item={item}
+                style={styles.item}
+                onPressCB={() =>
+                  navigation.navigate('ClientForm', {
+                    client: item,
+                  })
+                }
+              />
             </TouchableOpacity>
           </>
         )}

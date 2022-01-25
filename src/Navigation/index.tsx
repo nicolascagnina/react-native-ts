@@ -8,6 +8,7 @@ import Register from '../Components/Register';
 import {Button, TouchableOpacity, View, Text} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import RNBootSplash from 'react-native-bootsplash';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -68,7 +69,7 @@ export default function MainStack() {
     </>
   ) : (
     <>
-      <NavigationContainer>
+      <NavigationContainer onReady={() => RNBootSplash.hide()}>
         <Stack.Navigator>
           <Stack.Screen
             name="SignIn"

@@ -11,28 +11,26 @@ import {ClientContext} from '../../../Context/ClientsContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'ClientForm'>;
 
 export default function ClientForm({route, navigation}: Props) {
-  const [client, setClient] = useState<Client>();
+  const [id, setId] = useState<number>(-1);
+  // const [client, setClient] = useState<Client>();
   const clientContext = useContext(ClientContext);
+  const {
+    reset,
+    handleSubmit,
+    control,
+    formState: {errors},
+  } = useForm();
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    setClient(route.params?.client ?? undefined);
-    const test = !!route.params?.client;
-    console.log(test);
-  }, [isFocused]);
+    reset({name: route.params?.client.name, email: route.params?.client.email});
+    setId(route.params?.client.id ?? -1);
+  }, [reset, route.params?.client, route.params?.client.id]);
 
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm({
-    defaultValues: {
-      name: client?.name ?? '',
-      email: client?.email ?? '',
-    },
-  });
   const onSubmit = (data: Client) => {
-    clientContext?.addClient(data);
+    route.params?.client
+      ? clientContext?.updateClient({...data, id})
+      : clientContext?.addClient(data);
     navigation.navigate('Clients');
   };
   return (
@@ -77,7 +75,9 @@ export default function ClientForm({route, navigation}: Props) {
         name="email"
       />
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>Create</Text>
+        <Text style={styles.buttonText}>
+          {route.params?.client ? 'Update' : 'Create'}
+        </Text>
       </TouchableOpacity>
     </View>
   );

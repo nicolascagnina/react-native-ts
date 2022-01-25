@@ -28,7 +28,8 @@ const ClientContextProvider: FC = ({children}) => {
   };
 
   const updateClient = (client: Client): void => {
-    setClients(clients?.map(c => (c.id === client.id ? client : c)));
+    const newClients = clients?.map(c => (c.id === client.id ? client : c));
+    setClients(newClients);
   };
 
   return (
