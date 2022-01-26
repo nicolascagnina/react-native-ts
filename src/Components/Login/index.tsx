@@ -66,6 +66,7 @@ export default function Login({route, navigation}: Props) {
         render={({field: {onChange, onBlur, value}}) => (
           <View style={styles.textInputsContainer}>
             <TextInput
+              testID="user-input"
               onBlur={onBlur}
               onChangeText={onChange}
               style={styles.textInput}
@@ -76,7 +77,7 @@ export default function Login({route, navigation}: Props) {
         )}
         name="user"
       />
-      {errors.user && <Text>This is required.</Text>}
+      {errors.user && <Text>User is required.</Text>}
       <Controller
         control={control}
         rules={{
@@ -86,6 +87,7 @@ export default function Login({route, navigation}: Props) {
         render={({field: {onChange, onBlur, value}}) => (
           <View style={styles.textInputsContainer}>
             <TextInput
+              testID="password-input"
               onBlur={onBlur}
               onChangeText={onChange}
               style={styles.textInput}
@@ -96,12 +98,19 @@ export default function Login({route, navigation}: Props) {
         )}
         name="password"
       />
-      {errors.password && <Text>This is required.</Text>}
+      {errors.password && <Text>Password is required.</Text>}
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+      <TouchableOpacity
+        testID="submit-button"
+        style={styles.button}
+        onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
-      <Button title="Sign Up" onPress={() => navigation.navigate('SignUp')} />
+      <Button
+        title="Sign up"
+        testID="signUp-button"
+        onPress={() => navigation.navigate('SignUp')}
+      />
     </View>
   );
 }
