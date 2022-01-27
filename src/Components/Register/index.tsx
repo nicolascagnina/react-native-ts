@@ -14,8 +14,8 @@ import Toast from 'react-native-simple-toast';
 import {useForm, Controller} from 'react-hook-form';
 import {Credentials} from '../../Helpers/types';
 import {RootStackParamList} from '../../Helpers/types';
+import styles from './style';
 
-const {width, height} = Dimensions.get('window');
 type Props = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
 export default function Register({route, navigation}: Props) {
@@ -63,6 +63,10 @@ export default function Register({route, navigation}: Props) {
           control={control}
           rules={{
             required: {value: true, message: 'User is required.'},
+            pattern: {
+              value: /^[A-Z]+$/i,
+              message: 'No special characters allowed',
+            },
             minLength: {
               value: 4,
               message: 'At least 4 characters are required',
@@ -122,52 +126,3 @@ export default function Register({route, navigation}: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  screenContainer: {
-    backgroundColor: 'white',
-  },
-  formContainer: {
-    marginVertical: height * 0.2,
-    paddingHorizontal: 30,
-    paddingVertical: 30,
-    justifyContent: 'center',
-    alignContent: 'center',
-  },
-  titleContainer: {
-    marginHorizontal: width * 0.15,
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    textAlign: 'center',
-    color: '#007ACC',
-    fontSize: 35,
-    width: 200,
-  },
-  textInputsContainer: {
-    paddingBottom: 5,
-    borderBottomWidth: 0.4,
-  },
-  button: {
-    marginVertical: 20,
-    marginHorizontal: 90,
-    padding: 20,
-    borderRadius: 50,
-    backgroundColor: '#007ACC',
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: 'white',
-  },
-  textInput: {
-    paddingTop: 30,
-    paddingBottom: 15,
-    paddingHorizontal: 30,
-    margin: 5,
-  },
-  errorMsg: {
-    color: 'red',
-    paddingHorizontal: 30,
-  },
-});

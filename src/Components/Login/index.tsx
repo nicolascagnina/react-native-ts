@@ -4,8 +4,6 @@ import {
   View,
   TextInput,
   Button,
-  Dimensions,
-  StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -15,8 +13,7 @@ import {Credentials} from '../../Helpers/types';
 import {RootStackParamList} from '../../Helpers/types';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Toast from 'react-native-simple-toast';
-
-const {width, height} = Dimensions.get('window');
+import styles from './style';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
@@ -128,52 +125,3 @@ export default function Login({route, navigation}: Props) {
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  screenContainer: {
-    backgroundColor: 'white',
-  },
-  formContainer: {
-    marginVertical: height * 0.2,
-    paddingHorizontal: 30,
-    paddingVertical: 30,
-    justifyContent: 'center',
-    alignContent: 'center',
-  },
-  titleContainer: {
-    marginHorizontal: width * 0.15,
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    textAlign: 'center',
-    color: '#007ACC',
-    fontSize: 35,
-    width: 200,
-  },
-  button: {
-    marginVertical: 20,
-    marginHorizontal: 90,
-    padding: 20,
-    borderRadius: 50,
-    backgroundColor: '#007ACC',
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: 'white',
-  },
-  textInputsContainer: {
-    paddingBottom: 5,
-    borderBottomWidth: 0.4,
-  },
-  textInput: {
-    paddingTop: 30,
-    paddingBottom: 15,
-    paddingHorizontal: 30,
-    margin: 5,
-  },
-  errorMsg: {
-    paddingHorizontal: 30,
-    color: 'red',
-  },
-});

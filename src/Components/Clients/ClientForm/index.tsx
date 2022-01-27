@@ -19,7 +19,7 @@ export default function ClientForm({route, navigation}: Props) {
     handleSubmit,
     control,
     formState: {errors},
-  } = useForm();
+  } = useForm<Client>();
 
   useEffect(() => {
     if (!isFocused) {
@@ -50,7 +50,7 @@ export default function ClientForm({route, navigation}: Props) {
         rules={{
           required: {value: true, message: 'Name is required.'},
           pattern: {
-            value: /[A-Za-z]/,
+            value: /^[A-Z]+$/i,
             message: 'No special characters allowed',
           },
         }}

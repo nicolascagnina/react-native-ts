@@ -7,7 +7,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ClientContext} from '../../Context/ClientsContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Clients'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'ClientsScreen'>;
 
 const Clients = ({route, navigation}: Props) => {
   const clientContext = useContext(ClientContext);

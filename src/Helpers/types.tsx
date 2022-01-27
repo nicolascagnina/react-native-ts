@@ -21,7 +21,7 @@ export type RootStackParamList = {
   SignUp: undefined;
   Home: undefined;
   List: undefined;
-  Clients: undefined;
+  ClientsScreen: undefined;
   ClientForm:
     | {
         client: Client;
