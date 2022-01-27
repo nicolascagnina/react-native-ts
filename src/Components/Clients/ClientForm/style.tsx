@@ -2,6 +2,8 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   formContainer: {
+    flex: 1,
+    backgroundColor: 'white',
     paddingHorizontal: 30,
     paddingVertical: 0,
     justifyContent: 'center',
@@ -37,6 +39,10 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingHorizontal: 30,
     margin: 5,
+  },
+  errorMsg: {
+    paddingHorizontal: 30,
+    color: 'red',
   },
 });
 

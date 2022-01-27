@@ -27,7 +27,7 @@ const Clients = ({route, navigation}: Props) => {
   };
 
   return (
-    <View>
+    <View style={styles.screenContainer}>
       <FlatList
         data={clientContext?.clients}
         style={styles.wrapper}

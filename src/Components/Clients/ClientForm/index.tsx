@@ -4,15 +4,15 @@ import styles from './style';
 import {useForm, Controller} from 'react-hook-form';
 import {Client} from '../../../Helpers/types';
 import {RootStackParamList} from '../../../Helpers/types';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useIsFocused} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ClientContext} from '../../../Context/ClientsContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ClientForm'>;
 
 export default function ClientForm({route, navigation}: Props) {
   const [id, setId] = useState<number>(-1);
-  // const [client, setClient] = useState<Client>();
+  const isFocused = useIsFocused();
   const clientContext = useContext(ClientContext);
   const {
     reset,
@@ -20,18 +20,27 @@ export default function ClientForm({route, navigation}: Props) {
     control,
     formState: {errors},
   } = useForm();
-  const isFocused = useIsFocused();
 
   useEffect(() => {
-    reset({name: route.params?.client.name, email: route.params?.client.email});
-    setId(route.params?.client.id ?? -1);
-  }, [reset, route.params?.client, route.params?.client.id]);
+    if (!isFocused) {
+      reset({name: undefined, email: undefined});
+      navigation.setParams({client: undefined});
+    }
+  }, [isFocused]);
+
+  useEffect(() => {
+    reset({
+      name: route.params?.client?.name,
+      email: route.params?.client?.email,
+    }),
+      setId(route.params?.client?.id ?? -1);
+  }, [reset, route.params?.client]);
 
   const onSubmit = (data: Client) => {
     route.params?.client
       ? clientContext?.updateClient({...data, id})
       : clientContext?.addClient(data);
-    navigation.navigate('Clients');
+    navigation.navigate('ClientsScreen');
   };
   return (
     <View style={styles.formContainer}>
@@ -39,7 +48,11 @@ export default function ClientForm({route, navigation}: Props) {
       <Controller
         control={control}
         rules={{
-          required: true,
+          required: {value: true, message: 'Name is required.'},
+          pattern: {
+            value: /[A-Za-z]/,
+            message: 'No special characters allowed',
+          },
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <View style={styles.textInputsContainer}>
@@ -55,10 +68,17 @@ export default function ClientForm({route, navigation}: Props) {
         )}
         name="name"
       />
+      {errors.name && (
+        <Text style={styles.errorMsg}>{errors.name.message}</Text>
+      )}
       <Controller
         control={control}
         rules={{
-          required: true,
+          required: {value: true, message: 'Email is required.'},
+          pattern: {
+            value: /\S+@\S+\.\S+/,
+            message: 'Entered value does not match email format',
+          },
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <View style={styles.textInputsContainer}>
@@ -74,6 +94,9 @@ export default function ClientForm({route, navigation}: Props) {
         )}
         name="email"
       />
+      {errors.email && (
+        <Text style={styles.errorMsg}>{errors.email.message}</Text>
+      )}
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>
           {route.params?.client ? 'Update' : 'Create'}

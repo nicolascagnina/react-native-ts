@@ -5,10 +5,11 @@ import {RootStackParamList} from '../../Helpers/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({navigation}: Props) {
   return (
     <View
       style={{
+        backgroundColor: 'white',
         flex: 1,
         alignContent: 'center',
         justifyContent: 'center',
