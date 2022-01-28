@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Button} from 'react-native';
+import {Text, View, Button, TouchableOpacity} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../Helpers/types';
 
@@ -23,10 +23,19 @@ export default function HomeScreen({navigation}: Props) {
         }}>
         Welcome!
       </Text>
-      <Button
-        title="See clients list"
-        onPress={() => navigation.navigate('ClientsScreen')}
-      />
+      <TouchableOpacity
+        testID="signUp-button"
+        onPress={() => navigation.navigate('ClientsScreen')}>
+        <Text
+          style={{
+            color: '#007ACC',
+            fontSize: 20,
+            fontFamily: 'arial',
+            alignSelf: 'center',
+          }}>
+          See clients list
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }

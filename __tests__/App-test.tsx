@@ -1,7 +1,7 @@
 import 'react-native';
 import React from 'react';
-import Login from '../src/components/Login';
-import Register from '../src/components/Register';
+import Login from '../src/Components/Auth/Login';
+import Register from '../src/Components/Auth/Register';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';

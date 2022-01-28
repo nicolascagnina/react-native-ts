@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Login from '../Components/Login';
+import Login from '../Components/Auth/Login';
 import Clients from '../Components/Clients';
 import ClientForm from '../Components/Clients/ClientForm';
-import Register from '../Components/Register';
-import {Button, TouchableOpacity, View, Text} from 'react-native';
+import Register from '../Components/Auth/Register';
+import {TouchableOpacity, View, Text} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RNBootSplash from 'react-native-bootsplash';
@@ -15,19 +15,11 @@ import HomeScreen from '../Components/Home';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const LightTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    backgroundColor: 'white',
-  },
-};
-
 export default function MainStack() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   return isSignedIn ? (
     <>
-      <NavigationContainer theme={LightTheme}>
+      <NavigationContainer>
         <Tab.Navigator
           backBehavior="history"
           screenOptions={({route, navigation}) => ({
@@ -105,11 +97,19 @@ export default function MainStack() {
             initialParams={{setIsSignedIn: setIsSignedIn}}
             options={({navigation}) => ({
               headerRight: () => (
-                <Button
-                  onPress={() => navigation.navigate('SignUp')}
-                  title="Sign Up"
-                  color="#017ACC"
-                />
+                <TouchableOpacity
+                  testID="signUp-button"
+                  onPress={() => navigation.navigate('SignUp')}>
+                  <Text
+                    style={{
+                      color: '#007ACC',
+                      fontSize: 20,
+                      fontFamily: 'arial',
+                      alignSelf: 'center',
+                    }}>
+                    Sign up
+                  </Text>
+                </TouchableOpacity>
               ),
             })}
           />

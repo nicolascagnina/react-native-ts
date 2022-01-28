@@ -1,5 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Text, View, TextInput, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+} from 'react-native';
 import styles from './style';
 import {useForm, Controller} from 'react-hook-form';
 import {Client} from '../../../Helpers/types';
@@ -44,64 +50,68 @@ export default function ClientForm({route, navigation}: Props) {
   };
   return (
     <View style={styles.formContainer}>
-      <Text style={styles.title}>Information:</Text>
-      <Controller
-        control={control}
-        rules={{
-          required: {value: true, message: 'Name is required.'},
-          pattern: {
-            value: /^[A-Z]+$/i,
-            message: 'No special characters allowed',
-          },
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <View style={styles.textInputsContainer}>
-            <TextInput
-              onBlur={onBlur}
-              onChangeText={onChange}
-              autoCapitalize="none"
-              style={styles.textInput}
-              value={value}
-              placeholder="Name"
-            />
-          </View>
+      <KeyboardAvoidingView behavior={'padding'} keyboardVerticalOffset={150}>
+        <Text style={styles.title}>Information:</Text>
+        <Controller
+          control={control}
+          rules={{
+            required: {value: true, message: 'Name is required.'},
+            pattern: {
+              value: /^[A-Z]+$/i,
+              message: 'No special characters allowed',
+            },
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <View style={styles.textInputsContainer}>
+              <TextInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                autoCapitalize="none"
+                style={styles.textInput}
+                value={value}
+                placeholder="Name"
+              />
+            </View>
+          )}
+          name="name"
+        />
+        {errors.name && (
+          <Text style={styles.errorMsg}>{errors.name.message}</Text>
         )}
-        name="name"
-      />
-      {errors.name && (
-        <Text style={styles.errorMsg}>{errors.name.message}</Text>
-      )}
-      <Controller
-        control={control}
-        rules={{
-          required: {value: true, message: 'Email is required.'},
-          pattern: {
-            value: /\S+@\S+\.\S+/,
-            message: 'Entered value does not match email format',
-          },
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <View style={styles.textInputsContainer}>
-            <TextInput
-              onBlur={onBlur}
-              onChangeText={onChange}
-              autoCapitalize="none"
-              style={styles.textInput}
-              value={value}
-              placeholder="Email"
-            />
-          </View>
+        <Controller
+          control={control}
+          rules={{
+            required: {value: true, message: 'Email is required.'},
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: 'Entered value does not match email format',
+            },
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <View style={styles.textInputsContainer}>
+              <TextInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                autoCapitalize="none"
+                style={styles.textInput}
+                value={value}
+                placeholder="Email"
+              />
+            </View>
+          )}
+          name="email"
+        />
+        {errors.email && (
+          <Text style={styles.errorMsg}>{errors.email.message}</Text>
         )}
-        name="email"
-      />
-      {errors.email && (
-        <Text style={styles.errorMsg}>{errors.email.message}</Text>
-      )}
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>
-          {route.params?.client ? 'Update' : 'Create'}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleSubmit(onSubmit)}>
+          <Text style={styles.buttonText}>
+            {route.params?.client ? 'Update' : 'Create'}
+          </Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </View>
   );
 }

@@ -24,10 +24,6 @@ const styles = StyleSheet.create({
     fontSize: 35,
     width: 200,
   },
-  textInputsContainer: {
-    paddingBottom: 5,
-    borderBottomWidth: 0.4,
-  },
   button: {
     marginVertical: 20,
     marginHorizontal: 90,
@@ -39,15 +35,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
   },
+  textInputsContainer: {
+    paddingBottom: 5,
+    borderBottomWidth: 0.4,
+  },
   textInput: {
     paddingTop: 30,
     paddingBottom: 15,
     paddingHorizontal: 30,
     margin: 5,
   },
+  linkText: {
+    color: '#007ACC',
+    fontSize: 20,
+    fontFamily: 'arial',
+    alignSelf: 'center',
+  },
   errorMsg: {
-    color: 'red',
     paddingHorizontal: 30,
+    color: 'red',
   },
 });
 
