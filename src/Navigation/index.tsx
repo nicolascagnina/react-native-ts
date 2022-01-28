@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -10,6 +10,7 @@ import {TouchableOpacity, View, Text} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RNBootSplash from 'react-native-bootsplash';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import HomeScreen from '../Components/Home';
 
 const Stack = createNativeStackNavigator();
@@ -17,6 +18,27 @@ const Tab = createBottomTabNavigator();
 
 export default function MainStack() {
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [firstScan, setFirstScan] = useState(true);
+
+  useEffect(() => {
+    setFirstScan(false);
+    const asyncFunction = async () => {
+      try {
+        const isSignedAsyncStorage = await AsyncStorage.getItem('isSigned');
+        isSignedAsyncStorage === 'true'
+          ? setIsSignedIn(true)
+          : setIsSignedIn(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    asyncFunction();
+  }, []);
+
+  useEffect(() => {
+    if (!firstScan) AsyncStorage.setItem('isSigned', isSignedIn.toString());
+  }, [isSignedIn]);
+
   return isSignedIn ? (
     <>
       <NavigationContainer>
