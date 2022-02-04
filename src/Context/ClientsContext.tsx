@@ -34,9 +34,10 @@ const ClientContextProvider: FC = ({children}) => {
     Toast.show('Client created');
   };
 
-  const updateClient = (client: Client): void => {
+  const updateClient = async (client: Client): Promise<void> => {
     const newClients = clients?.map(c => (c.id === client.id ? client : c));
     setClients(newClients);
+    await AsyncStorage.setItem('clients', JSON.stringify(newClients));
     Toast.show('Client updated');
   };
 
