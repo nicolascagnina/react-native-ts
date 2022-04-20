@@ -59,7 +59,9 @@ export default function Register({route, navigation}: Props) {
       <View style={styles.screenContainer}>
         <View style={styles.formContainer}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Register</Text>
+            <Text testID="Register" style={styles.title}>
+              Register
+            </Text>
           </View>
           <Controller
             control={control}
@@ -77,6 +79,7 @@ export default function Register({route, navigation}: Props) {
             render={({field: {onChange, onBlur, value}}) => (
               <View style={styles.textInputsContainer}>
                 <TextInput
+                  testID="username-register"
                   onBlur={onBlur}
                   onChangeText={onChange}
                   style={styles.textInput}
@@ -103,6 +106,7 @@ export default function Register({route, navigation}: Props) {
             render={({field: {onChange, onBlur, value}}) => (
               <View style={styles.textInputsContainer}>
                 <TextInput
+                  testID="password-register"
                   onBlur={onBlur}
                   onChangeText={onChange}
                   style={styles.textInput}
@@ -121,12 +125,14 @@ export default function Register({route, navigation}: Props) {
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit(onSubmit)}>
-            <Text style={styles.buttonText}>Submit</Text>
+            <Text testID="submit-register" style={styles.buttonText}>
+              Submit
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            testID="signUp-button"
-            onPress={() => navigation.navigate('SignIn')}>
-            <Text style={styles.linkText}>Sign in</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+            <Text testID="signUp-button" style={styles.linkText}>
+              Sign in
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

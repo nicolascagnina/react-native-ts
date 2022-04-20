@@ -60,7 +60,9 @@ export default function Login({route, navigation}: Props) {
       <View style={styles.screenContainer}>
         <View style={styles.formContainer}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Log in</Text>
+            <Text testID="Login" style={styles.title}>
+              Log in
+            </Text>
           </View>
           <Controller
             control={control}

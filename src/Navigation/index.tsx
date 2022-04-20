@@ -120,7 +120,7 @@ export default function MainStack() {
             options={({navigation}) => ({
               headerRight: () => (
                 <TouchableOpacity
-                  testID="signUp-button"
+                  testID="signUp-button2"
                   onPress={() => navigation.navigate('SignUp')}>
                   <Text
                     style={{
